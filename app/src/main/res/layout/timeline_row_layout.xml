@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_tweet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    >
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:background="@color/shade1"
+        android:layout_height="match_parent"
+        android:id="@+id/timeline_row_layout_root"
+        >
+
+        <ImageView
+            android:layout_width="128px"
+            android:layout_height="128px"
+            android:id="@+id/imageProfilePicture"
+            android:scaleType="fitXY"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:padding="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/name"
+            android:id="@+id/textUserName"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/imageProfilePicture"
+            android:paddingTop="8dp"
+            android:textColor="@color/shade5"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/char140"
+            android:id="@+id/textTweet"
+            android:layout_below="@id/textUserName"
+            android:layout_toEndOf="@id/imageProfilePicture"
+            android:paddingBottom="8dp"
+            android:layout_marginRight="24dp"
+            android:textSize="16sp"
+
+            android:textColor="@color/textColorLabel"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/username"
+            android:id="@+id/textUname"
+            android:layout_above="@id/textTweet"
+            android:layout_toEndOf="@id/textUserName"
+            android:textSize="14sp"
+            android:paddingBottom="1dp"
+            android:paddingLeft="4dp"
+            android:textColor="@color/shade4" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="1h"
+            android:id="@+id/textTime"
+            android:layout_alignBottom="@id/textUname"
+            android:layout_alignParentEnd="true"
+            android:textSize="12sp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="6dp"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

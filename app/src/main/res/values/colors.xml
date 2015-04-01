@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#E91E63</color>
+    <color name="primaryColorDark">#C2185B</color>
+    <color name="accentColor">#FFC107</color>
+    <color name="textColorLabel">#FFFFFF</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="textColorPrimaryDark">#FAFAFA</color>
+
+    <color name="shade1">#300030</color>
+    <color name="shade2">#480048</color>
+    <color name="shade3">#601848</color>
+    <color name="shade4">#C04848</color>
+    <color name="shade5">#F07241</color>
+
+    <color name="tweet1">#300030</color>
+    <color name="tweet2">#480048</color>
+    <color name="tweet3">#601848</color>
+    <color name="tweet4">#880E4F</color>
+    <color name="tweet5">#AD1457</color>
+</resources>
+
