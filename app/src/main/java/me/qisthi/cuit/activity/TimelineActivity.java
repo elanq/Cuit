@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import me.qisthi.cuit.R;
 import me.qisthi.cuit.fragment.TimelineFragment;
@@ -29,6 +30,7 @@ public class TimelineActivity extends ActionBarActivity {
     private ListView navigationList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private ImageButton tweetButton;
+    private ProgressBar appProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class TimelineActivity extends ActionBarActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.rootLayout);
         navigationList = (ListView) findViewById(R.id.drawer);
         tweetButton = (ImageButton) findViewById(R.id.fab_button);
+        appProgress = (ProgressBar) findViewById(R.id.appProgress);
 
         //Set activity toolbar
         supportToolbar.setTitle("Timeline");
@@ -84,6 +87,7 @@ public class TimelineActivity extends ActionBarActivity {
         Fragment homeFragment = new TimelineFragment();
         homeFragment.setArguments(bundleFragment);
 
+        //load initial home timeline first
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.contentLayout, homeFragment)
