@@ -16,6 +16,7 @@ tools:context="me.qisthi.cuit.activity.SplashActivity">
         android:background="@color/background_material_light"
         android:layout_width="match_parent"
         android:elevation="2dp"
+        android:id="@+id/edit_tweet_root_layout"
         android:layout_height="wrap_content">
 
         <EditText
@@ -53,6 +54,7 @@ tools:context="me.qisthi.cuit.activity.SplashActivity">
         android:layout_marginRight="13dp"
         android:elevation="2dp"
         android:background="@color/shade2"
+        android:id="@+id/button_tweet_root_layout"
         >
         <Button
             android:layout_width="match_parent"

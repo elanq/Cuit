@@ -1,5 +1,7 @@
 package me.qisthi.cuit.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,13 +11,17 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nispok.snackbar.Snackbar;
 
 import me.qisthi.cuit.R;
+import me.qisthi.cuit.helper.IntentHelper;
 import me.qisthi.cuit.helper.TwitterHelper;
 
 public class WriteTweetActivity extends ActionBarActivity {
@@ -24,16 +30,43 @@ public class WriteTweetActivity extends ActionBarActivity {
     private EditText editTweet;
     private Button buttonTweet;
     private TextView textTweetLength;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_tweet);
+
 
         appToolbar = (Toolbar) findViewById(R.id.appToolbar);
         editTweet = (EditText) findViewById(R.id.edit_tweet);
         buttonTweet = (Button) findViewById(R.id.button_tweet);
         textTweetLength = (TextView) findViewById(R.id.text_tweet_words);
+        View editTweetLayout = findViewById(R.id.edit_tweet_root_layout);
+        View buttonTweetLayout = findViewById(R.id.button_tweet_root_layout);
+
+        //Start animation on start
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.slide_in_left);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                animation.setStartOffset(1000);
+            }
+        });
+        editTweetLayout.startAnimation(animation);
+        buttonTweetLayout.startAnimation(animation);
 
         appToolbar.setTitle("Tweet");
         appToolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
@@ -78,7 +111,8 @@ public class WriteTweetActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        overridePendingTransition(0,0);
+        finish();
+        IntentHelper.openTimelineActivity(this);
     }
-
 }

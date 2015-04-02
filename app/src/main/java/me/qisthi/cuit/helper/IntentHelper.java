@@ -33,15 +33,17 @@ public class IntentHelper {
     public static void openWriteTweetActivity(Activity rootActivity)
     {
         Intent detailIntent = new Intent(rootActivity, WriteTweetActivity.class);
-        detailIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        detailIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        detailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         rootActivity.startActivity(detailIntent);
     }
 
     public static void openTimelineActivity(Activity rootActivity)
     {
-        Intent searchActivityIntent = new Intent(rootActivity.getApplicationContext(), TimelineActivity.class);
-        searchActivityIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        rootActivity.getApplicationContext().startActivity(searchActivityIntent);
+        Intent timelineActivityIntent = new Intent(rootActivity.getApplicationContext(), TimelineActivity.class);
+        timelineActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        timelineActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        rootActivity.getApplicationContext().startActivity(timelineActivityIntent);
     }
 
     public static void openPhone(Activity rootActivity,String phoneNum)
