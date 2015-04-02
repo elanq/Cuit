@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import me.qisthi.cuit.R;
 import me.qisthi.cuit.fragment.TimelineFragment;
+import me.qisthi.cuit.helper.IntentHelper;
 import me.qisthi.cuit.helper.LayoutHelper;
 
 public class TimelineActivity extends ActionBarActivity {
@@ -26,6 +28,7 @@ public class TimelineActivity extends ActionBarActivity {
     private DrawerLayout drawerLayout;
     private ListView navigationList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private ImageButton tweetButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +43,19 @@ public class TimelineActivity extends ActionBarActivity {
         supportToolbar = (Toolbar) findViewById(R.id.appToolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.rootLayout);
         navigationList = (ListView) findViewById(R.id.drawer);
+        tweetButton = (ImageButton) findViewById(R.id.fab_button);
 
+        //Set activity toolbar
         supportToolbar.setTitle("Timeline");
         supportToolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
-
         setSupportActionBar(supportToolbar);
 
+        //set navigation toolbar
         navigationList.setAdapter(navigationAdapter);
         navigationList.setClickable(false);
         navigationList.setOnItemClickListener(new DrawerItemClickListener());
 
+        //set navigation icon
         actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, supportToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         ){
@@ -64,6 +70,14 @@ public class TimelineActivity extends ActionBarActivity {
             }
         };
 
+        //add listener to tweetbutton
+        tweetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentHelper.openWriteTweetActivity(TimelineActivity.this);
+            }
+        });
+
         //Initiate timeline fragment first
         Bundle bundleFragment = new Bundle();
         bundleFragment.putInt(TIMELINE_ACTION, HOME_TIMELINE_ACTION_VALUE);
@@ -76,6 +90,7 @@ public class TimelineActivity extends ActionBarActivity {
                 .commit();
     }
 
+    //this must be called after initiation navigation icon
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);

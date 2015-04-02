@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.widget.EditText;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nispok.snackbar.Snackbar;
@@ -38,6 +39,7 @@ import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -163,6 +165,53 @@ public class TwitterHelper {
                 refreshLayout.setRefreshing(false);
             }
 
+        }
+    }
+
+    public static class PostTweet extends AsyncTask<Void, Void, Boolean>
+    {
+        private Activity activity;
+        private EditText editTweet;
+
+        private ConfigurationBuilder confBuilder = new ConfigurationBuilder();
+
+        public PostTweet(Activity activity, EditText editTweet) {
+            this.activity = activity;
+            this.editTweet = editTweet;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Configuration twitterConf = confBuilder.setOAuthConsumerKey(activity.getString(R.string.api_key))
+                    .setOAuthConsumerSecret(activity.getString(R.string.api_secret))
+                    .setOAuthAccessToken(activity.getString(R.string.access_token))
+                    .setOAuthAccessTokenSecret(activity.getString(R.string.access_secret))
+                    .setJSONStoreEnabled(true)
+                    .build();
+            Twitter twitter = new TwitterFactory(twitterConf).getInstance();
+            try {
+                String tweetString = editTweet.getText().toString();
+                twitter4j.Status status = twitter.updateStatus(tweetString);
+            } catch (TwitterException e) {
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            String message = "Failed to update status";
+            if(aBoolean)
+            {
+                message = "Status successfully updated";
+            }
+            editTweet.setText("");
+            Snackbar.with(activity.getApplicationContext()).dismiss();
+            Snackbar.with(activity.getApplicationContext())
+                    .text(message)
+                    .show(activity);
         }
     }
 }

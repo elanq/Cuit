@@ -11,48 +11,58 @@ tools:context="me.qisthi.cuit.activity.SplashActivity">
     android:layout_height="wrap_content"
     />
 
-<FrameLayout
-    android:layout_margin="16dp"
-    android:background="@color/background_material_light"
-    android:layout_width="match_parent"
-    android:elevation="2dp"
-    android:layout_height="wrap_content">
-
-    <EditText
+    <FrameLayout
+        android:layout_margin="16dp"
+        android:background="@color/background_material_light"
         android:layout_width="match_parent"
-        android:layout_height="192dp"
-        android:id="@+id/editText"
-        android:hint="@string/abc_searchview_description_query"
-        android:textColorHint="@android:color/darker_gray"
-        android:padding="16dp"
-        android:inputType="textMultiLine"
-        android:lines="6"
-        android:gravity="top|left"
-        android:scrollbars="vertical"
-        android:background="@android:color/transparent"
-        />
+        android:elevation="2dp"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:padding="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="140"
-        android:textColor="@android:color/darker_gray"
-        android:id="@+id/textView"
-        android:layout_gravity="right|bottom" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="192dp"
+            android:id="@+id/edit_tweet"
+            android:hint="@string/tweet_hint"
+            android:textColorHint="@android:color/darker_gray"
+            android:padding="16dp"
+            android:inputType="textMultiLine"
+            android:lines="6"
+            android:gravity="top|left"
+            android:scrollbars="vertical"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/secondary_text_light"
+            />
+
+        <TextView
+            android:padding="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="140"
+            android:textColor="@android:color/darker_gray"
+            android:id="@+id/text_tweet_words"
+            android:layout_gravity="right|bottom" />
 
 
 </FrameLayout>
 
-<Button
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="13dp"
-    android:layout_marginRight="13dp"
-    android:text="Tweet"
-    android:id="@+id/btnTweet"
-    android:background="@color/shade2"
-    android:layout_gravity="center_horizontal" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:elevation="2dp"
+        android:background="@color/shade2"
+        >
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tweet"
+            android:id="@+id/button_tweet"
+            android:background="?selectableItemBackground"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
 
 </LinearLayout>
