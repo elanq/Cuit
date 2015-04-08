@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -172,12 +173,19 @@ public class TwitterHelper {
     {
         private Activity activity;
         private EditText editTweet;
+        private Button btnTweet;
 
         private ConfigurationBuilder confBuilder = new ConfigurationBuilder();
 
-        public PostTweet(Activity activity, EditText editTweet) {
-            this.activity = activity;
+        public PostTweet(Button btnTweet, EditText editTweet, Activity activity) {
+            this.btnTweet = btnTweet;
             this.editTweet = editTweet;
+            this.activity = activity;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            btnTweet.setEnabled(false);
         }
 
         @Override
@@ -208,6 +216,7 @@ public class TwitterHelper {
                 message = "Status successfully updated";
             }
             editTweet.setText("");
+            btnTweet.setEnabled(true);
             Snackbar.with(activity.getApplicationContext()).dismiss();
             Snackbar.with(activity.getApplicationContext())
                     .text(message)

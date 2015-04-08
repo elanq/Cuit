@@ -102,7 +102,7 @@ public class WriteTweetActivity extends ActionBarActivity {
                             .text(message)
                             .show(WriteTweetActivity.this);
                 }else{
-                    new TwitterHelper.PostTweet(WriteTweetActivity.this, editTweet).execute();
+                    new TwitterHelper.PostTweet(buttonTweet, editTweet,WriteTweetActivity.this).execute();
                 }
 
             }
