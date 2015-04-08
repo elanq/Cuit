@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import me.qisthi.cuit.activity.TimelineActivity;
+import me.qisthi.cuit.activity.TweetDetailActivity;
 import me.qisthi.cuit.activity.WriteTweetActivity;
 
 public class IntentHelper {
@@ -44,6 +45,14 @@ public class IntentHelper {
         timelineActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         timelineActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         rootActivity.getApplicationContext().startActivity(timelineActivityIntent);
+    }
+
+    public static void openTweetDetailActivity(Activity rootActivity)
+    {
+        Intent tweetDetailIntent = new Intent(rootActivity.getApplicationContext(), TweetDetailActivity.class);
+        tweetDetailIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        tweetDetailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        rootActivity.getApplicationContext().startActivity(tweetDetailIntent);
     }
 
     public static void openPhone(Activity rootActivity,String phoneNum)

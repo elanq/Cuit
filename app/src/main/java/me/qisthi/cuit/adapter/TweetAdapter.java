@@ -39,6 +39,7 @@ import java.util.Locale;
 
 import me.qisthi.cuit.R;
 import me.qisthi.cuit.helper.ImageHelper;
+import me.qisthi.cuit.helper.IntentHelper;
 import twitter4j.Status;
 
 
@@ -111,7 +112,15 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
             colorLayout = 2;
         }
 
-        setAnimation(tweetViewHolder.container,i);
+        //set tweet click listener
+        tweetViewHolder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentHelper.openTweetDetailActivity(activity);
+            }
+        });
+
+        setAnimation(tweetViewHolder.container, i);
     }
 
     @Override
