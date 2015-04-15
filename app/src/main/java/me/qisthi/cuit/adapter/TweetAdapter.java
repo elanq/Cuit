@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -41,6 +45,8 @@ import me.qisthi.cuit.R;
 import me.qisthi.cuit.helper.ImageHelper;
 import me.qisthi.cuit.helper.IntentHelper;
 import twitter4j.Status;
+import twitter4j.TwitterObjectFactory;
+import twitter4j.json.DataObjectFactory;
 
 
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHolder>{
@@ -65,11 +71,11 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
 
     @Override
     public void onBindViewHolder(TweetViewHolder tweetViewHolder, int i) {
-        Status status = statuses.get(i);
+        final Status status = statuses.get(i);
         tweetViewHolder.textName.setText(status.getUser().getName());
         tweetViewHolder.textTweet.setText(status.getText());
         tweetViewHolder.textUname.setText("@"+status.getUser().getScreenName());
-        new ImageHelper.LoadImage(status.getUser().getProfileImageURL(), tweetViewHolder.profilePicture, ImageHelper.LoadImage.LOAD_CIRCULAR_IMAGE).execute();
+        new ImageHelper.LoadImage(status.getUser().getBiggerProfileImageURL(), tweetViewHolder.profilePicture, ImageHelper.LoadImage.LOAD_CIRCULAR_IMAGE).execute();
         String dateFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH).format(status.getCreatedAt());
         tweetViewHolder.textTime.setText(dateFormat);
 
@@ -116,7 +122,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         tweetViewHolder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IntentHelper.openTweetDetailActivity(activity);
+                IntentHelper.openTweetDetailActivity(activity,status);
+
             }
         });
 

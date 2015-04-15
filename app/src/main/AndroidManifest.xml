@@ -43,6 +43,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.qisthi.cuit.activity.TimelineActivity" />
         </activity>
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="ff6b2925d9778f4b2ecab04117bfb00b1f1dcad2" />
     </application>
 
 </manifest>

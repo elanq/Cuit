@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.mikepenz.iconics.utils.Utils;
 
 import me.qisthi.cuit.R;
@@ -49,6 +50,7 @@ public class TimelineActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
+        Crashlytics.start(TimelineActivity.this);
         setContentView(R.layout.activity_timeline);
 
         sharedPreferences = getPreferences(Context.MODE_PRIVATE);
@@ -87,6 +89,7 @@ public class TimelineActivity extends ActionBarActivity {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+
             }
         };
 

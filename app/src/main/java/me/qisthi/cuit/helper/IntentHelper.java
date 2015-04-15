@@ -26,9 +26,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import me.qisthi.cuit.activity.TimelineActivity;
 import me.qisthi.cuit.activity.TweetDetailActivity;
 import me.qisthi.cuit.activity.WriteTweetActivity;
+import twitter4j.Status;
 
 public class IntentHelper {
     public static void openWriteTweetActivity(Activity rootActivity)
@@ -47,12 +54,27 @@ public class IntentHelper {
         rootActivity.getApplicationContext().startActivity(timelineActivityIntent);
     }
 
-    public static void openTweetDetailActivity(Activity rootActivity)
+    public static void openTweetDetailActivity(Activity rootActivity, Status status)
     {
+        ObjectMapper mapper = new ObjectMapper();
+        String json = null;
+        try {
+            json = mapper.writeValueAsString(status);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        String dateFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH).format(status.getCreatedAt());
+
         Intent tweetDetailIntent = new Intent(rootActivity.getApplicationContext(), TweetDetailActivity.class);
+        tweetDetailIntent.putExtra("statusJSON", json);
+        tweetDetailIntent.putExtra("statusCreated", dateFormat);
+        tweetDetailIntent.putExtra("statusProfileUrl", status.getUser().getBiggerProfileImageURL());
+
         tweetDetailIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         tweetDetailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         rootActivity.getApplicationContext().startActivity(tweetDetailIntent);
+
     }
 
     public static void openPhone(Activity rootActivity,String phoneNum)
