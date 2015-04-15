@@ -26,9 +26,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -46,6 +43,15 @@ public class IntentHelper {
         rootActivity.startActivity(detailIntent);
     }
 
+    public static void openReplyTweetActivity(Activity rootActivity, String username)
+    {
+        Intent detailIntent = new Intent(rootActivity, WriteTweetActivity.class);
+        detailIntent.putExtra("replyUsername", username);
+        detailIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        detailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        rootActivity.startActivity(detailIntent);
+    }
+
     public static void openTimelineActivity(Activity rootActivity)
     {
         Intent timelineActivityIntent = new Intent(rootActivity.getApplicationContext(), TimelineActivity.class);
@@ -56,20 +62,16 @@ public class IntentHelper {
 
     public static void openTweetDetailActivity(Activity rootActivity, Status status)
     {
-        ObjectMapper mapper = new ObjectMapper();
-        String json = null;
-        try {
-            json = mapper.writeValueAsString(status);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
         String dateFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH).format(status.getCreatedAt());
-
         Intent tweetDetailIntent = new Intent(rootActivity.getApplicationContext(), TweetDetailActivity.class);
-        tweetDetailIntent.putExtra("statusJSON", json);
-        tweetDetailIntent.putExtra("statusCreated", dateFormat);
-        tweetDetailIntent.putExtra("statusProfileUrl", status.getUser().getBiggerProfileImageURL());
+        String[] statusInfo = {
+                dateFormat,
+                status.getUser().getBiggerProfileImageURL(),
+                status.getUser().getName(),
+                status.getUser().getScreenName(),
+                status.getText()
+        };
+        tweetDetailIntent.putExtra("statusInfo", statusInfo);
 
         tweetDetailIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         tweetDetailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

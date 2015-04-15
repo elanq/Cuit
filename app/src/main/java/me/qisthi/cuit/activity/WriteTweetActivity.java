@@ -2,21 +2,17 @@ package me.qisthi.cuit.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nispok.snackbar.Snackbar;
 
@@ -73,7 +69,15 @@ public class WriteTweetActivity extends ActionBarActivity {
         setSupportActionBar(appToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        if(getIntent().getStringExtra("replyUsername")!=null)
+        {
+            String uname = getIntent().getStringExtra("replyUsername");
+            editTweet.setText("@"+uname);
+            editTweet.setSelection(uname.length()+1);
+        }
         editTweet.addTextChangedListener(new TextWatcher() {
+            private int existingCount = editTweet.getText().length();
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -81,13 +85,13 @@ public class WriteTweetActivity extends ActionBarActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int tweetCount = 140-count;
-                textTweetLength.setText(tweetCount+"");
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                int tweetCount = s.length() + existingCount;
+                textTweetLength.setText(tweetCount+"");
             }
         });
 
