@@ -88,7 +88,7 @@
 
     <include android:layout_width="match_parent"
 
-        android:layout_height="96px"
+        android:layout_height="128px"
         layout="@layout/tweet_button_group_action"
         android:layout_gravity="bottom|right"
 
