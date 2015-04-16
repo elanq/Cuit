@@ -2,6 +2,7 @@ package me.qisthi.cuit.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,6 +20,8 @@ public class TweetDetailActivity extends ActionBarActivity {
     private TextView statusTime;
     private ImageView statusUserProfile;
 
+    private Toolbar toolbar;
+
     private ImageButton buttonReply;
     private ImageButton buttonRetweet;
     private ImageButton buttonFave;
@@ -30,6 +33,8 @@ public class TweetDetailActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet_detail);
 
+        toolbar = (Toolbar) findViewById(R.id.appToolbar);
+
         statusName = (TextView)findViewById(R.id.textUserName);
         statusUname = (TextView)findViewById(R.id.textUname);
         statusText = (TextView)findViewById(R.id.textTweet);
@@ -38,9 +43,14 @@ public class TweetDetailActivity extends ActionBarActivity {
 
         buttonReply = (ImageButton) findViewById(R.id.btn_reply);
 
+        toolbar.setTitle("Detail");
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+
         final String[] statusInfo = getIntent().getStringArrayExtra("statusInfo");
         if(statusInfo!=null)
         {
+            toolbar.setTitle(statusInfo[2]+"'s Tweet");
+
             statusName.setText(statusInfo[2]);
             statusUname.setText("@"+statusInfo[3]);
             statusText.setText(statusInfo[4]);
@@ -59,8 +69,8 @@ public class TweetDetailActivity extends ActionBarActivity {
             });
         }
 
-
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 }

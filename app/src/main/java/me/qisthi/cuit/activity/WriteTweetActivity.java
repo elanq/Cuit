@@ -77,7 +77,6 @@ public class WriteTweetActivity extends ActionBarActivity {
             editTweet.setSelection(uname.length()+1);
         }
         editTweet.addTextChangedListener(new TextWatcher() {
-            private int existingCount = editTweet.getText().length();
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -90,8 +89,8 @@ public class WriteTweetActivity extends ActionBarActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                int tweetCount = s.length() + existingCount;
-                textTweetLength.setText(tweetCount+"");
+                int tweetCount = s.length();
+                textTweetLength.setText(String.valueOf(140-tweetCount));
             }
         });
 
