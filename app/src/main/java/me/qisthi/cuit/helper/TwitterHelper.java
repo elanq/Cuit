@@ -300,4 +300,57 @@ public class TwitterHelper {
         }
     }
 
+    public static class FavoriteTweet extends AsyncTask<Void, Void, Boolean>
+    {
+        private Activity activity;
+        private ImageButton favoriteButton;
+        private long tweetId;
+
+        private ConfigurationBuilder confBuilder = new ConfigurationBuilder();
+
+        public FavoriteTweet(Activity activity, ImageButton favoriteButton, long tweetId) {
+            this.activity = activity;
+            this.favoriteButton = favoriteButton;
+            this.tweetId = tweetId;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            favoriteButton.setEnabled(false);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Configuration twitterConf = confBuilder.setOAuthConsumerKey(activity.getString(R.string.api_key))
+                    .setOAuthConsumerSecret(activity.getString(R.string.api_secret))
+                    .setOAuthAccessToken(activity.getString(R.string.access_token))
+                    .setOAuthAccessTokenSecret(activity.getString(R.string.access_secret))
+                    .setJSONStoreEnabled(true)
+                    .build();
+            Twitter twitter = new TwitterFactory(twitterConf).getInstance();
+            try {
+                twitter4j.Status status = twitter.createFavorite(tweetId);
+            } catch (TwitterException e) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            String message = "Failed to favorite status";
+            if(aBoolean)
+            {
+                message = "Status successfully favorited";
+            }
+            favoriteButton.setEnabled(true);
+            Snackbar.with(activity.getApplicationContext()).dismiss();
+            Snackbar.with(activity.getApplicationContext())
+                    .text(message)
+                    .show(activity);
+        }
+    }
+
 }

@@ -45,6 +45,7 @@ public class TweetDetailActivity extends ActionBarActivity {
 
         buttonReply = (ImageButton) findViewById(R.id.btn_reply);
         buttonRetweet = (ImageButton) findViewById(R.id.btn_retweet);
+        buttonFave = (ImageButton) findViewById(R.id.btn_favorite);
 
         toolbar.setTitle("Detail");
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
@@ -95,6 +96,13 @@ public class TweetDetailActivity extends ActionBarActivity {
 
                     AlertDialog alertDialog = alertBuilder.create();
                     alertDialog.show();
+                }
+            });
+
+            buttonFave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new TwitterHelper.FavoriteTweet(TweetDetailActivity.this, buttonFave, Long.parseLong(statusInfo[5])).execute();
                 }
             });
         }
