@@ -1,5 +1,7 @@
 package me.qisthi.cuit.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import me.qisthi.cuit.R;
 import me.qisthi.cuit.helper.ImageHelper;
 import me.qisthi.cuit.helper.IntentHelper;
+import me.qisthi.cuit.helper.TwitterHelper;
 import twitter4j.Status;
 
 public class TweetDetailActivity extends ActionBarActivity {
@@ -27,7 +30,6 @@ public class TweetDetailActivity extends ActionBarActivity {
     private ImageButton buttonFave;
     private ImageButton buttonShare;
 
-     Status status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,7 @@ public class TweetDetailActivity extends ActionBarActivity {
         statusUserProfile = (ImageView)findViewById(R.id.imageProfilePicture);
 
         buttonReply = (ImageButton) findViewById(R.id.btn_reply);
+        buttonRetweet = (ImageButton) findViewById(R.id.btn_retweet);
 
         toolbar.setTitle("Detail");
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
@@ -65,6 +68,33 @@ public class TweetDetailActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
                     IntentHelper.openReplyTweetActivity(TweetDetailActivity.this, statusInfo[3]);
+                }
+            });
+
+            buttonRetweet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    //Build alert dialog
+                    final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(TweetDetailActivity.this);
+                    alertBuilder.setMessage(R.string.retweet_message);
+                    alertBuilder.setPositiveButton("YES",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //retweet initiated
+                                    new TwitterHelper.Retweet(TweetDetailActivity.this, (ImageButton)v, Long.parseLong(statusInfo[5])).execute();
+                                }
+                            });
+                    alertBuilder.setNegativeButton("NO",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+
+                    AlertDialog alertDialog = alertBuilder.create();
+                    alertDialog.show();
                 }
             });
         }

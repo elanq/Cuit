@@ -62,17 +62,9 @@ public class IntentHelper {
 
     public static void openTweetDetailActivity(Activity rootActivity, Status status)
     {
-        String dateFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH).format(status.getCreatedAt());
         Intent tweetDetailIntent = new Intent(rootActivity.getApplicationContext(), TweetDetailActivity.class);
-        String[] statusInfo = {
-                dateFormat,
-                status.getUser().getBiggerProfileImageURL(),
-                status.getUser().getName(),
-                status.getUser().getScreenName(),
-                status.getText()
-        };
+        String[] statusInfo = TwitterHelper.convertStatusToArray(status);
         tweetDetailIntent.putExtra("statusInfo", statusInfo);
-
         tweetDetailIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         tweetDetailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         rootActivity.getApplicationContext().startActivity(tweetDetailIntent);

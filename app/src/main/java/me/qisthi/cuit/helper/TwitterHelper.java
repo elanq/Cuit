@@ -23,18 +23,23 @@ THE SOFTWARE.
  */
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nispok.snackbar.Snackbar;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import me.qisthi.cuit.R;
+import me.qisthi.cuit.activity.TweetDetailActivity;
 import me.qisthi.cuit.adapter.TweetAdapter;
 import twitter4j.Paging;
 import twitter4j.ResponseList;
@@ -53,6 +58,24 @@ public class TwitterHelper {
 
     public static final int CACHE_HOME_TIMELINE = 4;
     public static final int CACHE_USER_MENTION = 5;
+
+
+    public static String[] convertStatusToArray(Status status)
+    {
+        if(status==null)
+        {
+            return null;
+        }
+        String dateFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH).format(status.getCreatedAt());
+        return new String[]{
+                dateFormat, //0
+                status.getUser().getBiggerProfileImageURL(), //1
+                status.getUser().getName(), //2
+                status.getUser().getScreenName(), //3
+                status.getText(), //4
+                String.valueOf(status.getId()) //5
+        };
+    }
 
 
     public static class LoadHomeTimeline extends AsyncTask<Void, Void, ResponseList<Status>>
@@ -223,4 +246,58 @@ public class TwitterHelper {
                     .show(activity);
         }
     }
+
+    public static class Retweet extends AsyncTask<Void, Void, Boolean>
+    {
+        private Activity activity;
+        private ImageButton btnRetweet;
+        private long tweetId;
+
+        public Retweet(Activity activity, ImageButton btnRetweet, long tweetId) {
+            this.activity = activity;
+            this.btnRetweet = btnRetweet;
+            this.tweetId = tweetId;
+        }
+
+        private ConfigurationBuilder confBuilder = new ConfigurationBuilder();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            btnRetweet.setEnabled(false);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Configuration twitterConf = confBuilder.setOAuthConsumerKey(activity.getString(R.string.api_key))
+                    .setOAuthConsumerSecret(activity.getString(R.string.api_secret))
+                    .setOAuthAccessToken(activity.getString(R.string.access_token))
+                    .setOAuthAccessTokenSecret(activity.getString(R.string.access_secret))
+                    .setJSONStoreEnabled(true)
+                    .build();
+            Twitter twitter = new TwitterFactory(twitterConf).getInstance();
+            try {
+                twitter4j.Status status = twitter.retweetStatus(tweetId);
+            } catch (TwitterException e) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            String message = "Failed to retweet status";
+            if(aBoolean)
+            {
+                message = "Status successfully retweeted";
+            }
+            btnRetweet.setEnabled(true);
+            Snackbar.with(activity.getApplicationContext()).dismiss();
+            Snackbar.with(activity.getApplicationContext())
+                    .text(message)
+                    .show(activity);
+        }
+    }
+
 }

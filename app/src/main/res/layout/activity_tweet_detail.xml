@@ -78,12 +78,12 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="1h"
                 android:id="@+id/textTime"
-                android:layout_alignBottom="@id/textUname"
-                android:layout_alignParentEnd="true"
                 android:textSize="12sp"
                 android:layout_marginRight="24dp"
-                android:layout_marginBottom="6dp"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:layout_alignBaseline="@+id/textUname"
+                android:layout_alignBottom="@+id/textUname"
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
     <include android:layout_width="match_parent"
