@@ -74,7 +74,7 @@ public class StorageHelper {
         editor.apply();
     }
 
-    public static void writePreferenceStatusValue(Activity activity, String key,  List<Status> statuses)
+    public static void writePreferenceStatusValue(Activity activity, String key,  List<String[]> statuses)
     {
         String rawStatuses = "";
         ObjectMapper mapper = new ObjectMapper();
@@ -100,18 +100,17 @@ public class StorageHelper {
         editor.apply();
     }
 
-
-    public static List<Status> readPreferenceStatusValue(Activity activity, String key) throws Exception
+    public static List<String[]> readPreferenceStatusValue(Activity activity, String key) throws Exception
     {
         SharedPreferences sharedPreferences = activity.getPreferences(Context.MODE_PRIVATE);
         String jsonValue = sharedPreferences.getString(key, null);
 
-        List<Status> statuses = new ArrayList<>();
+        List<String[]> statuses;
 
         if(jsonValue!=null)
         {
             ObjectMapper mapper = new ObjectMapper();
-            statuses = mapper.readValue(jsonValue, new TypeReference<List<Status>>() {} );
+            statuses = mapper.readValue(jsonValue, new TypeReference<List<String[]>>() {} );
 
             return statuses;
         }
