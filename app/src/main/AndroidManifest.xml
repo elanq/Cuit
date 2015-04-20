@@ -18,10 +18,14 @@
             android:label="@string/title_activity_timeline" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="cuit"
                     android:scheme="cuitapp" />
@@ -48,9 +52,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.qisthi.cuit.activity.TimelineActivity" />
         </activity>
+
         <meta-data
             android:name="com.crashlytics.ApiKey"
             android:value="ff6b2925d9778f4b2ecab04117bfb00b1f1dcad2" />
+
+        <activity
+            android:name=".activity.TwitterUserActivity"
+            android:label="@string/title_activity_twitter_user" >
+        </activity>
     </application>
 
 </manifest>

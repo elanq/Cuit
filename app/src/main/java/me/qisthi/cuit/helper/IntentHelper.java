@@ -31,6 +31,7 @@ import java.util.Locale;
 
 import me.qisthi.cuit.activity.TimelineActivity;
 import me.qisthi.cuit.activity.TweetDetailActivity;
+import me.qisthi.cuit.activity.TwitterUserActivity;
 import me.qisthi.cuit.activity.WriteTweetActivity;
 import twitter4j.Status;
 
@@ -68,6 +69,15 @@ public class IntentHelper {
         tweetDetailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         rootActivity.getApplicationContext().startActivity(tweetDetailIntent);
 
+    }
+
+    public static void openTwitterProfile(Activity rootActivity, String[] userProfile)
+    {
+        Intent twitterProfileIntent = new Intent(rootActivity.getApplicationContext(), TwitterUserActivity.class);
+        twitterProfileIntent.putExtra("profileInfo", userProfile);
+        twitterProfileIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        twitterProfileIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        rootActivity.getApplicationContext().startActivity(twitterProfileIntent);
     }
 
     public static void openPhone(Activity rootActivity,String phoneNum)

@@ -30,18 +30,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import twitter4j.Status;
-
-//TODO : Find way to cache statuses
 
 public class StorageHelper {
     public static final String SINCE_TWEET_ID = "tweetSinceId";
-    public static final String MAX_TWEET_ID ="tweetMaxId";
     public static final String SINCE_MENTION_TWEET_ID = "tweetMentionSinceId";
-    public static final String MAX_MENTION_TWEET_ID = "tweetMentionMaxId";
 
     public static final String STORAGE_CACHE_HOME_TIMELINE = "cacheHomeTimeline";
     public static final String STORAGE_CACHE_MENTION_TIMELINE = "cacheMentionTimeline";

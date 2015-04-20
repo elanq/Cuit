@@ -23,16 +23,12 @@ THE SOFTWARE.
  */
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nispok.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
@@ -41,7 +37,6 @@ import java.util.List;
 import java.util.Locale;
 
 import me.qisthi.cuit.R;
-import me.qisthi.cuit.activity.TweetDetailActivity;
 import me.qisthi.cuit.adapter.TweetAdapter;
 import twitter4j.Paging;
 import twitter4j.ResponseList;
@@ -160,7 +155,7 @@ public class TwitterHelper {
                         {
                             return null;
                         }
-                        ResponseList<twitter4j.Status> responseTimeline = twitter.getHomeTimeline(new Paging(sinceId));
+                        ResponseList<twitter4j.Status> responseTimeline = twitter.getHomeTimeline(new Paging(sinceId).count(100));
                         if(responseTimeline.size()>0)
                         {
                             StorageHelper.writePreferenceLongValue(activity, StorageHelper.SINCE_TWEET_ID, responseTimeline.get(0).getId());
@@ -180,7 +175,7 @@ public class TwitterHelper {
                         {
                             return null;
                         }
-                        ResponseList<twitter4j.Status> responseMention = twitter.getMentionsTimeline(new Paging(mentionSinceId));
+                        ResponseList<twitter4j.Status> responseMention = twitter.getMentionsTimeline(new Paging(mentionSinceId).count(100));
                         if(responseMention.size()>0)
                         {
                             StorageHelper.writePreferenceLongValue(activity, StorageHelper.SINCE_MENTION_TWEET_ID, responseMention.get(0).getId());
@@ -260,7 +255,7 @@ public class TwitterHelper {
             Twitter twitter = new TwitterFactory(twitterConf).getInstance();
             try {
                 String tweetString = editTweet.getText().toString();
-                twitter4j.Status status = twitter.updateStatus(tweetString);
+                twitter.updateStatus(tweetString);
             } catch (TwitterException e) {
                 return false;
             }
