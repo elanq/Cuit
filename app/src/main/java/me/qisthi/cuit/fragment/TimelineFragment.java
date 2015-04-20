@@ -44,7 +44,7 @@ import twitter4j.Status;
 
 public class TimelineFragment extends Fragment{
 
-    private List<Status> tweetsTimeline = new ArrayList<>();
+    private List<String[]> tweetsTimeline = new ArrayList<>();
     private TweetAdapter tweetAdapter;
     private SwipeRefreshLayout refreshLayout;
 

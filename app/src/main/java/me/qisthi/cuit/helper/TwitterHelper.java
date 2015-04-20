@@ -30,11 +30,13 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nispok.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -77,24 +79,46 @@ public class TwitterHelper {
         };
     }
 
+    public static List<String[]> convertStatusesToArray(List<Status> statuses)
+    {
+        List<String[]> arrayStatuses = new ArrayList<>();
+        if(statuses==null)
+        {
+            return null;
+        }
+        for(Status status:statuses) {
+            String dateFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH).format(status.getCreatedAt());
+            String[] statusArray = {
+                    dateFormat, //0
+                    status.getUser().getBiggerProfileImageURL(), //1
+                    status.getUser().getName(), //2
+                    status.getUser().getScreenName(), //3
+                    status.getText(), //4
+                    String.valueOf(status.getId()) //5
+            };
+            arrayStatuses.add(statusArray);
+        }
+        return arrayStatuses;
+    }
+
 
     public static class LoadHomeTimeline extends AsyncTask<Void, Void, ResponseList<Status>>
     {
         private ConfigurationBuilder confBuilder = new ConfigurationBuilder();
         private Activity activity;
         private TweetAdapter tweetAdapter;
-        private List<twitter4j.Status> tweetsTimeline;
+        private List<String[]> tweetsTimeline;
         private SwipeRefreshLayout refreshLayout;
 
         private int action;
 
-        public LoadHomeTimeline(Activity activity, TweetAdapter tweetAdapter, List<twitter4j.Status> tweetsTimeline, int action) {
+        public LoadHomeTimeline(Activity activity, TweetAdapter tweetAdapter, List<String[]> tweetsTimeline, int action) {
             this.activity = activity;
             this.tweetAdapter = tweetAdapter;
             this.tweetsTimeline = tweetsTimeline;
             this.action = action;
         }
-        public LoadHomeTimeline(Activity activity, TweetAdapter tweetAdapter, List<twitter4j.Status> tweetsTimeline, int action, SwipeRefreshLayout refreshLayout) {
+        public LoadHomeTimeline(Activity activity, TweetAdapter tweetAdapter, List<String[]> tweetsTimeline, int action, SwipeRefreshLayout refreshLayout) {
             this.activity = activity;
             this.tweetAdapter = tweetAdapter;
             this.tweetsTimeline = tweetsTimeline;
@@ -170,11 +194,16 @@ public class TwitterHelper {
                     if(action == LOAD_HOME_TIMELINE)
                     {
                         StorageHelper.writePreferenceLongValue(activity, StorageHelper.SINCE_TWEET_ID, response.get(0).getId());
+                        StorageHelper.writePreferenceStatusValue(activity, StorageHelper.STORAGE_CACHE_HOME_TIMELINE, convertStatusesToArray(response));
                     }else if(action == LOAD_USER_MENTION)
                     {
                         StorageHelper.writePreferenceLongValue(activity, StorageHelper.SINCE_MENTION_TWEET_ID, response.get(0).getId());
+                        StorageHelper.writePreferenceStatusValue(activity, StorageHelper.STORAGE_CACHE_MENTION_TIMELINE, convertStatusesToArray(response));
                     }
-                    tweetsTimeline.addAll(0,response);
+
+                    List<String[]> statusesCache = TwitterHelper.convertStatusesToArray(response);
+                    tweetsTimeline.addAll(0,statusesCache);
+                    StorageHelper.writePreferenceStatusValue(activity, StorageHelper.STORAGE_CACHE_HOME_TIMELINE, tweetsTimeline);
                     tweetAdapter.notifyDataSetChanged();
                 }
             }else{

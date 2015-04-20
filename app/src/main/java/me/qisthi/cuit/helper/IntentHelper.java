@@ -60,11 +60,10 @@ public class IntentHelper {
         rootActivity.getApplicationContext().startActivity(timelineActivityIntent);
     }
 
-    public static void openTweetDetailActivity(Activity rootActivity, Status status)
+    public static void openTweetDetailActivity(Activity rootActivity, String[] status)
     {
         Intent tweetDetailIntent = new Intent(rootActivity.getApplicationContext(), TweetDetailActivity.class);
-        String[] statusInfo = TwitterHelper.convertStatusToArray(status);
-        tweetDetailIntent.putExtra("statusInfo", statusInfo);
+        tweetDetailIntent.putExtra("statusInfo", status);
         tweetDetailIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         tweetDetailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         rootActivity.getApplicationContext().startActivity(tweetDetailIntent);

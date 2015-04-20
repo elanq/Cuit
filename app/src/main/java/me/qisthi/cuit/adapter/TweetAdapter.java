@@ -51,13 +51,13 @@ import twitter4j.json.DataObjectFactory;
 
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHolder>{
 
-    private List<Status> statuses;
+    private List<String[]> statuses;
     private Activity activity;
     private int colorLayout = 1;
     private boolean colorBoolInc = true;
     private int lastPosition = -1;
 
-    public TweetAdapter(Activity activity, List<Status> statuses) {
+    public TweetAdapter(Activity activity, List<String[]> statuses) {
         this.activity = activity;
         this.statuses = statuses;
     }
@@ -71,13 +71,12 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
 
     @Override
     public void onBindViewHolder(TweetViewHolder tweetViewHolder, int i) {
-        final Status status = statuses.get(i);
-        tweetViewHolder.textName.setText(status.getUser().getName());
-        tweetViewHolder.textTweet.setText(status.getText());
-        tweetViewHolder.textUname.setText("@"+status.getUser().getScreenName());
-        new ImageHelper.LoadImage(status.getUser().getBiggerProfileImageURL(), tweetViewHolder.profilePicture, ImageHelper.LoadImage.LOAD_CIRCULAR_IMAGE).execute();
-        String dateFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH).format(status.getCreatedAt());
-        tweetViewHolder.textTime.setText(dateFormat);
+        final String[] status = statuses.get(i);
+        tweetViewHolder.textTime.setText(status[0]);
+        new ImageHelper.LoadImage(status[1], tweetViewHolder.profilePicture, ImageHelper.LoadImage.LOAD_CIRCULAR_IMAGE).execute();
+        tweetViewHolder.textName.setText(status[2]);
+        tweetViewHolder.textUname.setText("@"+status[3]);
+        tweetViewHolder.textTweet.setText(status[4]);
 
         //Set dynamic tweet color
         switch (colorLayout)
