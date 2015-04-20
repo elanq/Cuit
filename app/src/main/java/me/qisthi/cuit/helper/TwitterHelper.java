@@ -102,7 +102,7 @@ public class TwitterHelper {
     }
 
 
-    public static class LoadHomeTimeline extends AsyncTask<Void, Void, ResponseList<Status>>
+    public static class LoadHomeTimeline extends AsyncTask<Void, Void, List<String[]>>
     {
         private ConfigurationBuilder confBuilder = new ConfigurationBuilder();
         private Activity activity;
@@ -133,7 +133,7 @@ public class TwitterHelper {
         }
 
         @Override
-        protected ResponseList<twitter4j.Status> doInBackground(Void... params) {
+        protected List<String[]> doInBackground(Void... params) {
 
             try{
                 Configuration twitterConf = confBuilder.setOAuthConsumerKey(activity.getString(R.string.api_key))
@@ -146,7 +146,13 @@ public class TwitterHelper {
                 switch (action)
                 {
                     case LOAD_HOME_TIMELINE:
-                        return twitter.getHomeTimeline();
+                        //only loaded in first time/ when tweet cache has no value
+                        List<String[]> homeStatusCache = StorageHelper.readPreferenceStatusValue(activity, StorageHelper.STORAGE_CACHE_HOME_TIMELINE);
+                        if(homeStatusCache!=null)
+                        {
+                            return homeStatusCache;
+                        }
+                        return TwitterHelper.convertStatusesToArray(twitter.getHomeTimeline());
                     case LOAD_MORE_HOME_TIMELINE:
                         //get last id
                         Long sinceId = StorageHelper.getPreferenceLongValue(activity, StorageHelper.SINCE_TWEET_ID);
@@ -159,10 +165,15 @@ public class TwitterHelper {
                         {
                             StorageHelper.writePreferenceLongValue(activity, StorageHelper.SINCE_TWEET_ID, responseTimeline.get(0).getId());
                         }
-                        return responseTimeline;
+                        return TwitterHelper.convertStatusesToArray(responseTimeline);
 
                     case LOAD_USER_MENTION:
-                        return twitter.getMentionsTimeline();
+                        List<String[]> mentionStatusCache = StorageHelper.readPreferenceStatusValue(activity, StorageHelper.STORAGE_CACHE_MENTION_TIMELINE);
+                        if(mentionStatusCache!=null)
+                        {
+                            return mentionStatusCache;
+                        }
+                        return TwitterHelper.convertStatusesToArray(twitter.getMentionsTimeline());
                     case LOAD_MORE_USER_MENTION:
                         Long mentionSinceId= StorageHelper.getPreferenceLongValue(activity, StorageHelper.SINCE_MENTION_TWEET_ID);
                         if(mentionSinceId==0)
@@ -174,7 +185,7 @@ public class TwitterHelper {
                         {
                             StorageHelper.writePreferenceLongValue(activity, StorageHelper.SINCE_MENTION_TWEET_ID, responseMention.get(0).getId());
                         }
-                        return responseMention;
+                        return TwitterHelper.convertStatusesToArray(responseMention);
                 }
                 return null;
             }catch (Exception ex)
@@ -184,27 +195,25 @@ public class TwitterHelper {
         }
 
         @Override
-        protected void onPostExecute(ResponseList<twitter4j.Status> response) {
+        protected void onPostExecute(List<String[]> response) {
             activity.setProgressBarIndeterminateVisibility(false);
             if(response!=null)
             {
                 //save last id
                 if(response.size()!=0)
                 {
-                    if(action == LOAD_HOME_TIMELINE)
+                    tweetsTimeline.addAll(0,response);
+                    tweetAdapter.notifyDataSetChanged();
+                    if(action == LOAD_HOME_TIMELINE || action == LOAD_MORE_HOME_TIMELINE)
                     {
-                        StorageHelper.writePreferenceLongValue(activity, StorageHelper.SINCE_TWEET_ID, response.get(0).getId());
-                        StorageHelper.writePreferenceStatusValue(activity, StorageHelper.STORAGE_CACHE_HOME_TIMELINE, convertStatusesToArray(response));
-                    }else if(action == LOAD_USER_MENTION)
+                        StorageHelper.writePreferenceLongValue(activity, StorageHelper.SINCE_TWEET_ID, Long.parseLong(response.get(0)[5]));
+                        StorageHelper.writePreferenceStatusValue(activity, StorageHelper.STORAGE_CACHE_HOME_TIMELINE, tweetsTimeline);
+                    }else if(action == LOAD_USER_MENTION || action == LOAD_MORE_USER_MENTION)
                     {
-                        StorageHelper.writePreferenceLongValue(activity, StorageHelper.SINCE_MENTION_TWEET_ID, response.get(0).getId());
-                        StorageHelper.writePreferenceStatusValue(activity, StorageHelper.STORAGE_CACHE_MENTION_TIMELINE, convertStatusesToArray(response));
+                        StorageHelper.writePreferenceLongValue(activity, StorageHelper.SINCE_MENTION_TWEET_ID, Long.parseLong(response.get(0)[5]));
+                        StorageHelper.writePreferenceStatusValue(activity, StorageHelper.STORAGE_CACHE_MENTION_TIMELINE, tweetsTimeline);
                     }
 
-                    List<String[]> statusesCache = TwitterHelper.convertStatusesToArray(response);
-                    tweetsTimeline.addAll(0,statusesCache);
-                    StorageHelper.writePreferenceStatusValue(activity, StorageHelper.STORAGE_CACHE_HOME_TIMELINE, tweetsTimeline);
-                    tweetAdapter.notifyDataSetChanged();
                 }
             }else{
                 Snackbar.with(activity.getApplicationContext()).dismiss();
