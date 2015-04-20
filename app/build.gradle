@@ -53,5 +53,6 @@ dependencies {
     compile 'com.mikepenz.iconics:library:0.7.0@aar'
     compile 'org.twitter4j:twitter4j-core:4.0.2'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'com.crashlytics.android:crashlytics:1.+'
 }
