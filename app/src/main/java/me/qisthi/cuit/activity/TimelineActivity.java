@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.mikepenz.iconics.utils.Utils;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import me.qisthi.cuit.R;
 import me.qisthi.cuit.fragment.TimelineFragment;
@@ -51,6 +53,10 @@ public class TimelineActivity extends ActionBarActivity {
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         Crashlytics.start(TimelineActivity.this);
+
+        ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(this);
+        ImageLoader.getInstance().init(configuration);
+
         setContentView(R.layout.activity_timeline);
 
         sharedPreferences = getPreferences(Context.MODE_PRIVATE);

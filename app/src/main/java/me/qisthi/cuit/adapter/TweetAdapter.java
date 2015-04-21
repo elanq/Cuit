@@ -23,8 +23,10 @@ THE SOFTWARE.
  */
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,19 +36,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.twitter.Autolink;
+import com.twitter.HitHighlighter;
 
-import java.text.SimpleDateFormat;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
-import java.util.Locale;
 
 import me.qisthi.cuit.R;
 import me.qisthi.cuit.helper.ImageHelper;
 import me.qisthi.cuit.helper.IntentHelper;
-import twitter4j.Status;
-import twitter4j.TwitterObjectFactory;
-import twitter4j.json.DataObjectFactory;
 
 
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHolder>{
@@ -57,9 +61,26 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
     private boolean colorBoolInc = true;
     private int lastPosition = -1;
 
+    private DisplayImageOptions imageOptions;
+
     public TweetAdapter(Activity activity, List<String[]> statuses) {
         this.activity = activity;
         this.statuses = statuses;
+
+        imageOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ic_stub)
+                .showImageForEmptyUri(R.drawable.ic_empty)
+                .showImageOnFail(R.drawable.ic_error)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .displayer(new RoundedBitmapDisplayer(128))
+                .build();
+
+
+//        ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(activity);
+//        imageLoader = ImageLoader.getInstance();
+//        imageLoader.init(configuration);
     }
 
     @Override
@@ -70,14 +91,32 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
     }
 
     @Override
-    public void onBindViewHolder(TweetViewHolder tweetViewHolder, int i) {
+    public void onBindViewHolder(final TweetViewHolder tweetViewHolder, int i) {
         final String[] status = statuses.get(i);
         tweetViewHolder.textTime.setText(status[0]);
-        new ImageHelper.LoadImage(status[1], tweetViewHolder.profilePicture, ImageHelper.LoadImage.LOAD_CIRCULAR_IMAGE).execute();
+//        new ImageHelper.LoadImage(status[1], tweetViewHolder.profilePicture, ImageHelper.LoadImage.LOAD_CIRCULAR_IMAGE).execute();
+//        imageLoader.loadImage(status[1], new SimpleImageLoadingListener(){
+//            @Override
+//            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                if(loadedImage!=null )
+//                {
+//                    Bitmap roundBitmap = ImageHelper.getRoundedCornerBitmap(loadedImage, 128);
+//                    ImageView imageView = tweetViewHolder.profilePicture;
+//                    imageView.setImageBitmap(roundBitmap);
+//                }
+//            }
+//        });
+
+//        imageLoader.displayImage("http://"+status[1], tweetViewHolder.profilePicture);
+        ImageLoader.getInstance().displayImage(status[1], tweetViewHolder.profilePicture,imageOptions);
         tweetViewHolder.textName.setText(status[2]);
         tweetViewHolder.textUname.setText("@"+status[3]);
-        tweetViewHolder.textTweet.setText(status[4]);
 
+        //TODO : Set link clickable
+        Autolink autolink = new Autolink();
+        String linked = autolink.autoLink(status[4]);
+        Spanned linkedText = Html.fromHtml(linked);
+        tweetViewHolder.textTweet.setText(linkedText);
         //Set dynamic tweet color
         switch (colorLayout)
         {
@@ -126,7 +165,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
             }
         });
 
-        setAnimation(tweetViewHolder.container, i);
+//        setAnimation(tweetViewHolder.container, i);
     }
 
     @Override
