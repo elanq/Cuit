@@ -55,7 +55,10 @@ public class TimelineActivity extends ActionBarActivity {
         Crashlytics.start(TimelineActivity.this);
 
         ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(this);
-        ImageLoader.getInstance().init(configuration);
+        if(!ImageLoader.getInstance().isInited())
+        {
+            ImageLoader.getInstance().init(configuration);
+        }
 
         setContentView(R.layout.activity_timeline);
 

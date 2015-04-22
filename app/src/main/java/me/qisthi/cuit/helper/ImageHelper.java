@@ -33,11 +33,30 @@ import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import me.qisthi.cuit.R;
+
 public class ImageHelper {
+    public static DisplayImageOptions getDisplayOptions()
+    {
+        return new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ic_stub)
+                .showImageForEmptyUri(R.drawable.ic_empty)
+                .showImageOnFail(R.drawable.ic_error)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .displayer(new RoundedBitmapDisplayer(146))
+                .build();
+
+    }
+
     public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
                 .getHeight(), Bitmap.Config.ARGB_8888);

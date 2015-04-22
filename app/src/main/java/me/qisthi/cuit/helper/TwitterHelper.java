@@ -31,6 +31,7 @@ import android.widget.ImageButton;
 
 import com.nispok.snackbar.Snackbar;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,9 +64,10 @@ public class TwitterHelper {
         {
             return null;
         }
-        String dateFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH).format(status.getCreatedAt());
+//        String dateFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH).format(status.getCreatedAt());
+
         return new String[]{
-                dateFormat, //0
+                String.valueOf(status.getCreatedAt().getTime()),
                 status.getUser().getBiggerProfileImageURL(), //1
                 status.getUser().getName(), //2
                 status.getUser().getScreenName(), //3
@@ -82,9 +84,9 @@ public class TwitterHelper {
             return null;
         }
         for(Status status:statuses) {
-            String dateFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH).format(status.getCreatedAt());
+//            String dateFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH).format(status.getCreatedAt());
             String[] statusArray = {
-                    dateFormat, //0
+                    String.valueOf(status.getCreatedAt().getTime()),
                     status.getUser().getBiggerProfileImageURL(), //1
                     status.getUser().getName(), //2
                     status.getUser().getScreenName(), //3

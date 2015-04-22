@@ -46,7 +46,9 @@ import com.twitter.HitHighlighter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import me.qisthi.cuit.R;
 import me.qisthi.cuit.helper.ImageHelper;
@@ -61,22 +63,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
     private boolean colorBoolInc = true;
     private int lastPosition = -1;
 
-    private DisplayImageOptions imageOptions;
-
     public TweetAdapter(Activity activity, List<String[]> statuses) {
         this.activity = activity;
         this.statuses = statuses;
-
-        imageOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_stub)
-                .showImageForEmptyUri(R.drawable.ic_empty)
-                .showImageOnFail(R.drawable.ic_error)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .displayer(new RoundedBitmapDisplayer(128))
-                .build();
-
 
 //        ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(activity);
 //        imageLoader = ImageLoader.getInstance();
@@ -93,7 +82,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
     @Override
     public void onBindViewHolder(final TweetViewHolder tweetViewHolder, int i) {
         final String[] status = statuses.get(i);
-        tweetViewHolder.textTime.setText(status[0]);
+        String dateFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH).format(Long.parseLong(status[0]));
+        tweetViewHolder.textTime.setText(dateFormat);
 //        new ImageHelper.LoadImage(status[1], tweetViewHolder.profilePicture, ImageHelper.LoadImage.LOAD_CIRCULAR_IMAGE).execute();
 //        imageLoader.loadImage(status[1], new SimpleImageLoadingListener(){
 //            @Override
@@ -108,7 +98,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
 //        });
 
 //        imageLoader.displayImage("http://"+status[1], tweetViewHolder.profilePicture);
-        ImageLoader.getInstance().displayImage(status[1], tweetViewHolder.profilePicture,imageOptions);
+        ImageLoader.getInstance().displayImage(status[1], tweetViewHolder.profilePicture,ImageHelper.getDisplayOptions());
         tweetViewHolder.textName.setText(status[2]);
         tweetViewHolder.textUname.setText("@"+status[3]);
 
