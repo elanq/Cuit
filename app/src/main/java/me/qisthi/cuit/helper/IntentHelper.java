@@ -26,14 +26,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import me.qisthi.cuit.activity.TimelineActivity;
 import me.qisthi.cuit.activity.TweetDetailActivity;
 import me.qisthi.cuit.activity.TwitterUserActivity;
 import me.qisthi.cuit.activity.WriteTweetActivity;
-import twitter4j.Status;
 
 public class IntentHelper {
     public static void openWriteTweetActivity(Activity rootActivity)

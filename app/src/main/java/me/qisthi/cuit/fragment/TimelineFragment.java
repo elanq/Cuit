@@ -37,9 +37,7 @@ import java.util.List;
 import me.qisthi.cuit.R;
 import me.qisthi.cuit.activity.TimelineActivity;
 import me.qisthi.cuit.adapter.TweetAdapter;
-import me.qisthi.cuit.helper.StorageHelper;
 import me.qisthi.cuit.helper.TwitterHelper;
-import twitter4j.Status;
 
 
 public class TimelineFragment extends Fragment{

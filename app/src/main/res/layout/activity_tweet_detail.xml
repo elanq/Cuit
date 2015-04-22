@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="me.qisthi.cuit.activity.TweetDetailActivity">
@@ -10,7 +11,13 @@
         android:layout_height="wrap_content"
         />
 
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -85,7 +92,6 @@
                     android:layout_marginRight="12dp"
                     android:layout_marginTop="24dp" />
             </RelativeLayout>
-
             <include android:layout_width="match_parent"
 
                 android:layout_height="128px"
@@ -95,5 +101,7 @@
                 android:id="@+id/tweet_actions"
                 android:layout_margin="16dp" />
 
+        </LinearLayout>
 
+    </ScrollView>
 </LinearLayout>

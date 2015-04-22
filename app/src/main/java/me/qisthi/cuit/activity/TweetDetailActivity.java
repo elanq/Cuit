@@ -4,11 +4,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.text.Spannable;
 import android.text.Spanned;
 import android.view.View;
 import android.widget.ImageButton;
@@ -25,7 +23,6 @@ import me.qisthi.cuit.R;
 import me.qisthi.cuit.helper.ImageHelper;
 import me.qisthi.cuit.helper.IntentHelper;
 import me.qisthi.cuit.helper.TwitterHelper;
-import twitter4j.Status;
 
 public class TweetDetailActivity extends ActionBarActivity {
     private TextView statusUname;
@@ -47,12 +44,8 @@ public class TweetDetailActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet_detail);
 
-//        recView = (RecyclerView) findViewById(R.id.rec_layout);
 
         toolbar = (Toolbar) findViewById(R.id.appToolbar);
-//        final LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        recView.setLayoutManager(layoutManager);
 
         statusName = (TextView)findViewById(R.id.textUserName);
         statusUname = (TextView)findViewById(R.id.textUname);

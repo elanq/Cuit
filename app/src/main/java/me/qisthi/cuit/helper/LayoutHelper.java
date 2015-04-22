@@ -22,8 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
-import android.view.View;
-
 public class LayoutHelper {
     public static final String[] navigationMenu = {"Home", "Mention", "DM", "Lists", "Favorite", "Search", "Settings"};
 }

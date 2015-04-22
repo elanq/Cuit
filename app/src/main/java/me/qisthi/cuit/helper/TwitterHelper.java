@@ -31,11 +31,8 @@ import android.widget.ImageButton;
 
 import com.nispok.snackbar.Snackbar;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import me.qisthi.cuit.R;
 import me.qisthi.cuit.adapter.TweetAdapter;
