@@ -62,8 +62,6 @@ public class TweetDetailActivity extends ActionBarActivity {
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
 
 
-
-
         final String[] statusInfo = getIntent().getStringArrayExtra("statusInfo");
         if(statusInfo!=null)
         {

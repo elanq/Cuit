@@ -23,6 +23,8 @@ THE SOFTWARE.
  */
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.Button;
@@ -42,6 +44,8 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -53,6 +57,8 @@ public class TwitterHelper {
 
     public static final int CACHE_HOME_TIMELINE = 4;
     public static final int CACHE_USER_MENTION = 5;
+
+    public static final String CALLBACK_URL = "cuit://cuitapp";
 
 
     public static String[] convertStatusToArray(Status status)
@@ -382,6 +388,44 @@ public class TwitterHelper {
             Snackbar.with(activity.getApplicationContext())
                     .text(message)
                     .show(activity);
+        }
+    }
+
+    public static class TwitterLogin extends AsyncTask<Void, Void, String>
+    {
+        private Activity activity;
+        private ConfigurationBuilder confBuilder = new ConfigurationBuilder();
+        private Configuration twitterConf;
+        private Twitter twitter;
+        private RequestToken requestToken;
+
+        public TwitterLogin(Activity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            twitter = new TwitterFactory(twitterConf).getInstance();
+            try {
+                requestToken = twitter.getOAuthRequestToken(CALLBACK_URL);
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            twitterConf = confBuilder
+                    .setOAuthConsumerKey(activity.getString(R.string.api_key))
+                    .setOAuthConsumerSecret(activity.getString(R.string.api_secret))
+                    .setJSONStoreEnabled(true)
+                    .build();
+        }
+
+        @Override
+        protected void onPostExecute(String callback) {
+            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(requestToken.getAuthenticationURL())));
         }
     }
 
